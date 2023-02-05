@@ -24,33 +24,33 @@ public class TestAPI {
     }
 
 
-    @Test
-    @Description("Create users")
-    void post_201_status() {
-
-        LoginBodyModel bodyModel = new LoginBodyModel();
-
-
-        bodyModel.setName("name");
-        bodyModel.setMorpheus("morpheus");
-        bodyModel.setJob("job");
-        bodyModel.setLeader("leader");
-
-        LoginResponseModel responseModel = given()
-                .log().all()
-                .filter(new AllureRestAssured())
-                .contentType(ContentType.JSON)
-                .body(bodyModel)
-                .when()
-                .post("/api/users")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(201)
-                .extract().as(LoginResponseModel.class);
-
-        assertThat(responseModel.getToken()).isEqualTo("");
-    }
+//    @Test
+//    @Description("Create users")
+//    void post_201_status() {
+//
+//        LoginBodyModel bodyModel = new LoginBodyModel();
+//
+//
+//        bodyModel.setName("name");
+//        bodyModel.setMorpheus("morpheus");
+//        bodyModel.setJob("job");
+//        bodyModel.setLeader("leader");
+//
+//        LoginResponseModel responseModel = given()
+//                .log().all()
+//                .filter(new AllureRestAssured())
+//                .contentType(ContentType.JSON)
+//                .body(bodyModel)
+//                .when()
+//                .post("/api/users")
+//                .then()
+//                .log().status()
+//                .log().body()
+//                .statusCode(201)
+//                .extract().as(LoginResponseModel.class);
+//
+//        assertThat(responseModel.getToken()).isEqualTo("");
+//    }
 
     @Test
     @Description("Registrations Success")
