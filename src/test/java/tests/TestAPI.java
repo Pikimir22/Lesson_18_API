@@ -61,7 +61,7 @@ public class TestAPI {
         LoginResponseModel responseModel = given(loginRequest)
                 .body(regist)
                 .when()
-                .post("/register")
+                .post("/login")
                 .then()
                 .spec(loginResponseSpec)
                 .extract().as(LoginResponseModel.class);

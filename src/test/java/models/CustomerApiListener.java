@@ -8,7 +8,7 @@ public class CustomerApiListener {
 
     public static AllureRestAssured withButifuleAllure(){
         FILTER.setRequestTemplate("request.ftl");
-        FILTER.setRequestTemplate("responce.ftl");
+        FILTER.setRequestTemplate("response.ftl");
         return FILTER;
     }
 
