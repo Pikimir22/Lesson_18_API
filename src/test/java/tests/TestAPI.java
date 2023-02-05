@@ -4,13 +4,12 @@ import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jdk.jfr.Description;
-import models.LoginBodyModel;
-import models.LoginResponseModel;
+import models.LoginRequestModel;
+import models.UserRequestCreate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static models.CustomerApiListener.withButifuleAllure;
 import static org.hamcrest.CoreMatchers.is;
 import static org.assertj.core.api.Assertions.assertThat;
 import static specs.LoginSpec.loginRequest;
@@ -29,17 +28,14 @@ public class TestAPI {
     void post_201_status() {
 
 
+        UserRequestCreate userCreate = new UserRequestCreate();
 
-        String person = "{\"name\": \"morpheus\",\"job\": \"leader\"}";
-
-//        bodyModel.setName("name");
-//        bodyModel.setMorpheus("morpheus");
-//        bodyModel.setJob("job");
-//        bodyModel.setLeader("leader");
+        userCreate.setName("morpheus");
+        userCreate.setJob("leader");
 
         given()
                 .log().all()
-                .body(person)
+                .body(userCreate)
                 .filter(new AllureRestAssured())
                 .contentType(ContentType.JSON)
                 .when()
@@ -48,8 +44,8 @@ public class TestAPI {
                 .log().status()
                 .log().body()
                 .statusCode(201)
-                .body("name",is("morpheus"))
-                .body("job",is("leader"));
+                .body("name", is("morpheus"))
+                .body("job", is("leader"));
 
 
     }
@@ -58,15 +54,18 @@ public class TestAPI {
     @Description("Registrations Success")
     void post_200_registrations() {
 
-        String regist = "{\"email\": \"eve.holt@reqres.in\",\"password\": \"pistol\"}";
+        LoginRequestModel requestModel = new LoginRequestModel();
+        requestModel.setEmail("eve.holt@reqres.in");
+        requestModel.setPassword("pistol");
 
-        LoginResponseModel responseModel = given(loginRequest)
-                .body(regist)
+
+        LoginRequestModel responseModel = given(loginRequest)
+                .body(requestModel)
                 .when()
                 .post("/login")
                 .then()
                 .spec(loginResponseSpec)
-                .extract().as(LoginResponseModel.class);
+                .extract().as(LoginRequestModel.class);
 
         assertThat(responseModel.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
 
@@ -90,17 +89,21 @@ public class TestAPI {
     @Description("Register Unsuccess")
     void post_400_status() {
 
-        String param = "{\"email\": \"sydney@fife\"}";
+        LoginRequestModel requestModel = new LoginRequestModel();
+
+        requestModel.setEmail("email");
+        requestModel.setEmail("sydney@fife");
 
         given()
                 .log().all()
                 .contentType(ContentType.JSON)
-                .body(param)
+                .body(requestModel)
                 .when()
                 .post("/api/register")
                 .then()
                 .statusCode(400)
                 .body("error", is("Missing password"));
+
     }
 
 
