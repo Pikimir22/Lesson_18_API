@@ -24,33 +24,35 @@ public class TestAPI {
     }
 
 
-//    @Test
-//    @Description("Create users")
-//    void post_201_status() {
-//
-//        LoginBodyModel bodyModel = new LoginBodyModel();
-//
-//
+    @Test
+    @Description("Create users")
+    void post_201_status() {
+
+
+
+        String person = "{\"name\": \"morpheus\",\"job\": \"leader\"}";
+
 //        bodyModel.setName("name");
 //        bodyModel.setMorpheus("morpheus");
 //        bodyModel.setJob("job");
 //        bodyModel.setLeader("leader");
-//
-//        LoginResponseModel responseModel = given()
-//                .log().all()
-//                .filter(new AllureRestAssured())
-//                .contentType(ContentType.JSON)
-//                .body(bodyModel)
-//                .when()
-//                .post("/api/users")
-//                .then()
-//                .log().status()
-//                .log().body()
-//                .statusCode(201)
-//                .extract().as(LoginResponseModel.class);
-//
-//        assertThat(responseModel.getToken()).isEqualTo("");
-//    }
+
+        given()
+                .log().all()
+                .body(person)
+                .filter(new AllureRestAssured())
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/api/users")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(201)
+                .body("name",is("morpheus"))
+                .body("job",is("leader"));
+
+
+    }
 
     @Test
     @Description("Registrations Success")
